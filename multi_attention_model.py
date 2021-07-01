@@ -150,9 +150,9 @@ def steam_model():
 def multi_attention_Model():
     epoch = 50
     batch_size = 48
-    elec_extract = load_model('./elec.h5')
-    cool_extract = load_model('./cool.h5')
-    steam_extract = load_model('./steam.h5')
+    elec_extract = load_model('./model/elec.h5')
+    cool_extract = load_model('./model/cool.h5')
+    steam_extract = load_model('./model/steam.h5')
 
     ext1 = elec_extract.get_layer('elec_feature').output
     ext2 = cool_extract.get_layer('cool_feature').output
@@ -168,7 +168,7 @@ def multi_attention_Model():
     model.summary()
 
     model.compile(loss='mae', optimizer='adam')
-    plot_model(model, to_file='multi_attention_model.png')
+    plot_model(model, to_file='./picture/multi_attention_model.png')
     model.fit([X_train[:, :, 0].reshape((2920, 24, 1)),
                                         X_train[:, :, 1].reshape((2920, 24, 1)),
                                                                                 X_train[:, :, 2].reshape((2920, 24, 1))],
@@ -176,13 +176,13 @@ def multi_attention_Model():
 
     middle = Model(inputs=[elec_extract.input, cool_extract.input, steam_extract.input],
                    outputs=model.get_layer('attention_vec').output)
-    model.save("./multi_attention_model.h5")
-    middle.save("./multi_attention.h5")
+    model.save("./model/multi_attention_model.h5")
+    middle.save("./model/multi_attention.h5")
     return model, middle
 
 
 # model, middle = multi_attention_Model()
-mid = load_model('multi_attention.h5')
+mid = load_model('./model/multi_attention.h5')
 weight = mid.predict([X_test[:, :, 0].reshape((712, 24, 1)),
                                         X_test[:, :, 1].reshape((712, 24, 1)),
                                                                                 X_test[:, :, 2].reshape((712, 24, 1))])

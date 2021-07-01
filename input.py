@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 def get_data():
-    df = pd.read_csv('campus.csv')
+    df = pd.read_csv('./data/campus.csv')
     df = df.iloc[:, 4:]
     print(df.head())
 

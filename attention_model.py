@@ -170,7 +170,7 @@ def get_activations(model, inputs, print_shape_only=False, layer_name=None):
 # print(attention_vector)
 # print("attention_vector.shape: ", attention_vector.shape)
 
-mid = load_model('attention.h5')
+mid = load_model('./model/attention.h5')
 weight = mid.predict(X_test)
 print("weight.shape: ", weight.shape)  # (712, 24, 64)
 print(weight)

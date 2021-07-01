@@ -158,7 +158,7 @@ def multi_attention_Model():
     ext2 = cool_extract.get_layer('cool_feature').output
     ext3 = steam_extract.get_layer('steam_feature').output
 
-    m = Concatenate(axis=1)([ext1, ext2, ext3])
+    m = Concatenate(axis=2)([ext1, ext2, ext3])
 
     attention_mul = attention_block(m)
     attention_mul = Flatten()(attention_mul)
@@ -176,13 +176,13 @@ def multi_attention_Model():
 
     middle = Model(inputs=[elec_extract.input, cool_extract.input, steam_extract.input],
                    outputs=model.get_layer('attention_vec').output)
-    model.save("./model/multi_attention_model.h5")
-    middle.save("./model/multi_attention.h5")
+    model.save("./model/multi_attention_model1.h5")
+    middle.save("./model/multi_attention1.h5")
     return model, middle
 
 
-# model, middle = multi_attention_Model()
-mid = load_model('./model/multi_attention.h5')
+model, mid = multi_attention_Model()
+# mid = load_model('./model/multi_attention1.h5')
 weight = mid.predict([X_test[:, :, 0].reshape((712, 24, 1)),
                                         X_test[:, :, 1].reshape((712, 24, 1)),
                                                                                 X_test[:, :, 2].reshape((712, 24, 1))])

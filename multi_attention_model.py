@@ -181,12 +181,12 @@ def multi_attention_Model():
     return model, middle
 
 
-model, mid = multi_attention_Model()
-# mid = load_model('./model/multi_attention1.h5')
+# model, mid = multi_attention_Model()
+mid = load_model('./model/multi_attention1.h5')
 weight = mid.predict([X_test[:, :, 0].reshape((712, 24, 1)),
                                         X_test[:, :, 1].reshape((712, 24, 1)),
                                                                                 X_test[:, :, 2].reshape((712, 24, 1))])
-print("weight.shape: ", weight.shape)  # (712, 72, 48)
+print("weight.shape: ", weight.shape)  # (712, 24, 144)
 print(weight)
 
 # 取第一组测试数据注意力机制的结果
@@ -194,6 +194,37 @@ attention_vector = np.mean(weight[0, :, :], axis=0)
 print('attention =', attention_vector)
 
 # 画权重柱状图
-plt.bar(range(len(attention_vector)), attention_vector, width=0.3, label='weight')
+plt.bar(range(len(attention_vector)), attention_vector, width=0.5, label='weight')
 plt.legend()
+plt.show()
+
+num = -np.sort(-attention_vector)
+
+index = np.argsort(-attention_vector)
+
+print("index: ", index)
+print("num: ", num)
+
+plt.figure()
+plt.bar(index, num)
+plt.show()
+
+plt.subplot(11, 2, 1)
+plt.plot(range(24), X_test[0, :, 0], label='original')
+for i in range(10):
+    plt.subplot(11, 2, (2*i+3))
+    plt.plot(range(24), weight[0, :, index[i]])
+
+X_test[0, 10, 0] = 0.3
+weight = mid.predict([X_test[:, :, 0].reshape((712, 24, 1)),
+                                        X_test[:, :, 1].reshape((712, 24, 1)),
+                                                                                X_test[:, :, 2].reshape((712, 24, 1))])
+attention_vector = np.mean(weight[0, :, :], axis=0)
+index = np.argsort(-attention_vector)
+
+plt.subplot(11, 2, 2)
+plt.plot(range(24), X_test[0, :, 0], label='noise')
+for i in range(10):
+    plt.subplot(11, 2, (2*i+4))
+    plt.plot(range(24), weight[0, :, index[i]])
 plt.show()

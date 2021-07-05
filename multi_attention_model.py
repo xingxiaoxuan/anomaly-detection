@@ -209,10 +209,16 @@ plt.figure()
 plt.bar(index, num)
 plt.show()
 
-plt.subplot(11, 2, 1)
+# plt.subplot(11, 2, 1)
+# plt.plot(range(24), X_test[0, :, 0], label='original')
+# for i in range(10):
+#     plt.subplot(11, 2, (2*i+3))
+#     plt.plot(range(24), weight[0, :, index[i]])
+
+plt.subplot(21, 2, 1)
 plt.plot(range(24), X_test[0, :, 0], label='original')
-for i in range(10):
-    plt.subplot(11, 2, (2*i+3))
+for i in range(20):
+    plt.subplot(21, 2, (2*i+3))
     plt.plot(range(24), weight[0, :, index[i]])
 
 X_test[0, 10, 0] = 0.3
@@ -222,9 +228,18 @@ weight = mid.predict([X_test[:, :, 0].reshape((712, 24, 1)),
 attention_vector = np.mean(weight[0, :, :], axis=0)
 index = np.argsort(-attention_vector)
 
-plt.subplot(11, 2, 2)
+# plt.subplot(11, 2, 2)
+# plt.plot(range(24), X_test[0, :, 0], label='noise')
+# for i in range(10):
+#     plt.subplot(11, 2, (2*i+4))
+#     plt.plot(range(24), weight[0, :, index[i]])
+# plt.show()
+# # [ 22   8  93  96   6   1  41  64 105  62
+
+plt.subplot(21, 2, 2)
 plt.plot(range(24), X_test[0, :, 0], label='noise')
-for i in range(10):
-    plt.subplot(11, 2, (2*i+4))
+for i in range(20):
+    plt.subplot(21, 2, (2*i+4))
     plt.plot(range(24), weight[0, :, index[i]])
 plt.show()
+# 22   8  93  96   6   1  41  64  105  62  34  44  107  13  90  101  68  29  116 131
